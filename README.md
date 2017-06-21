@@ -5,13 +5,14 @@ QuickPaint using pre-trained styles (models) or TrainStyle a new model on a spec
 
 A TensorFlow implementation for feed forward CNN fast neural style transfer, based on  [1-3].  
 
+## Examples 
+
 ## Usage
 
 ### QuickPaint
 
 ### TrainStyle
 
-## Examples 
 
 ## Dependencies
 
