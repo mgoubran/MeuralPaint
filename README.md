@@ -3,7 +3,7 @@ Paint images using famous artistic styles in seconds (or less!)
 
 QuickPaint using pre-trained styles (models) or TrainStyle a new model on a specific style
 
-A TensorFlow implementation for feed forward CNN fast neural style transfer, based on [1,2].  
+A TensorFlow implementation for feed forward CNN fast neural style transfer, based on  [1-3].  
 
 ## Usage
 
@@ -15,15 +15,33 @@ A TensorFlow implementation for feed forward CNN fast neural style transfer, bas
 
 ## Dependencies
 
+- Python 2.7.9
+- TensorFlow 0.11.0 or higher
+- scipy 0.18.1  
+- numpy 1.11.2
+
+#### To train:
+ 
+ - 
+
 ## Acknowledgements 
 
-- Based on fast-style-transfer: https://github.com/lengstrom/fast-style-transfer
+- Implementation based on fast-style-transfer: https://github.com/lengstrom/fast-style-transfer
 by lengstrom (engstrom at mit dot edu)
 
-- Pre-trained models from: https://drive.google.com/drive/folders/0B9jhaT37ydSyRk9UX0wwX3BpMzQ
+- Pre-trained models acquired from: https://drive.google.com/drive/folders/0B9jhaT37ydSyRk9UX0wwX3BpMzQ
 
 ## References
 
 [1] Johnson, Justin, Alexandre Alahi, and Li Fei-Fei. "Perceptual losses for real-time style transfer and super-resolution." arXiv preprint arXiv:1603.08155.
+https://arxiv.org/abs/1603.08155
+
+check out Justin's repo for a theano/Lua implementation: https://github.com/jcjohnson/fast-neural-style
 
 [2] Ulyanov, Dmitry, Andrea Vedaldi, and Victor Lempitsky. "Instance Normalization: The Missing Ingredient for Fast Stylization." arXiv preprint arXiv:1607.08022.
+https://arxiv.org/abs/1607.08022
+
+[3] Gatys, Leon A., Alexander S. Ecker, and Matthias Bethge. "A neural algorithm of artistic style." arXiv preprint arXiv:1508.06576.
+https://arxiv.org/abs/1508.06576 
+
+(original, 'slow' neural transfer)
