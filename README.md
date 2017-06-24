@@ -3,7 +3,7 @@ Paint images using famous artistic styles in seconds (or less!)
 
 QuickPaint using pre-trained styles (models) or TrainStyle a new model on a new style
 
-A TensorFlow implementation for feed forward CNN fast neural style transfer, based on  [1-3].  
+a TensorFlow implementation for feed forward CNN fast neural style transfer, based on  [1-3].  
 
 works with different versions of pre-trained TF models
 
@@ -32,10 +32,11 @@ works with different versions of pre-trained TF models
 - Implementation based on fast-style-transfer: https://github.com/lengstrom/fast-style-transfer
 by lengstrom (engstrom at mit dot edu)
 
+- vgg network from: https://github.com/anishathalye/neural-style
+
 - Pre-trained models acquired from: 
     1) https://drive.google.com/drive/folders/0B9jhaT37ydSyRk9UX0wwX3BpMzQ
-    2) https://github.com/junrushao1994/fast-neural-style.tf/tree/master/models
-    3) 
+    2) https://github.com/junrushao1994/fast-neural-style.tf/tree/master/models   
 
 ## References
 
