@@ -10,7 +10,7 @@ import tensorflow as tf
 from argparse import ArgumentParser, RawTextHelpFormatter
 from collections import defaultdict
 from scipy.misc import imread, imsave
-from datetime import datetime
+import time
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # filter out info & warning logs
 
@@ -166,7 +166,7 @@ def eval_mul_dims(in_path, out_path, model_path, device, batch_size, model_arch)
     in_path_of_shape = defaultdict(list)
     out_path_of_shape = defaultdict(list)
 
-    # if imgs have diff shapes, get all shapes
+    # if images have diff shapes, get all shapes
     for i in range(len(in_path)):
         in_image = in_path[i]
         out_image = out_path[i]
@@ -185,7 +185,7 @@ def eval_mul_dims(in_path, out_path, model_path, device, batch_size, model_arch)
 def main():
     opts = get_opts()
 
-    start_time = datetime.now()
+    start_time = time.time()
 
     # check if input is file or dir
     if not os.path.isdir(opts.in_path):
@@ -193,10 +193,10 @@ def main():
         full_out = [os.path.join(opts.out_path, os.path.basename(opts.in_path)) if os.path.isdir(opts.out_path) \
                         else opts.out_path]
     else:
-        # get all filenames if dir
+        # get all file names if dir
         files = []
-        for (dirpath, dirnames, filenames) in os.walk(opts.in_path):
-            files.extend(filenames)
+        for (dir_path, dir_names, file_names) in os.walk(opts.in_path):
+            files.extend(file_names)
 
         full_in = [os.path.join(opts.in_path, x) for x in files]
         full_out = [os.path.join(opts.out_path, x) if os.path.isdir(opts.out_path) else opts.out_path for x in files]
@@ -204,9 +204,7 @@ def main():
     eval_mul_dims(full_in, full_out, opts.model_path, device=opts.device, batch_size=opts.batch_size,
                   model_arch=opts.model_arch)
 
-    time_diff = (datetime.now() - start_time)
-
-    print("\n Painting done in %s.%s seconds ... Have a good day!\n" % (time_diff.seconds, time_diff.microseconds))
+    print("\n Painting done in %0.3f seconds ... Have a good day!\n" % (time.time() - start_time))
 
 
 if __name__ == '__main__':
