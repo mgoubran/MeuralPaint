@@ -5,6 +5,8 @@ QuickPaint using pre-trained styles (models) or TrainStyle a new model on a spec
 
 A TensorFlow implementation for feed forward CNN fast neural style transfer, based on  [1-3].  
 
+works with different versions of pre-trained TF models
+
 ## Examples 
 
 ## Usage
@@ -17,7 +19,7 @@ A TensorFlow implementation for feed forward CNN fast neural style transfer, bas
 ## Dependencies
 
 - Python 2.7.9
-- TensorFlow 0.11.0 or higher
+- TensorFlow 0.11.0 >=
 - scipy 0.18.1  
 - numpy 1.11.2
 
@@ -30,7 +32,10 @@ A TensorFlow implementation for feed forward CNN fast neural style transfer, bas
 - Implementation based on fast-style-transfer: https://github.com/lengstrom/fast-style-transfer
 by lengstrom (engstrom at mit dot edu)
 
-- Pre-trained models acquired from: https://drive.google.com/drive/folders/0B9jhaT37ydSyRk9UX0wwX3BpMzQ
+- Pre-trained models acquired from: 
+    1) https://drive.google.com/drive/folders/0B9jhaT37ydSyRk9UX0wwX3BpMzQ
+    2) https://github.com/junrushao1994/fast-neural-style.tf/tree/master/models
+    3) 
 
 ## References
 

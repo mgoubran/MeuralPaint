@@ -93,7 +93,7 @@ def main():
 
     style_target = read_img(opts.style)
     content_targets = glob.glob('%s/*' % opts.train_path)
-    style_name = os.path.split(os.path.basename(opts.style))[0]
+    style_name = os.path.splitext(os.path.basename(opts.style))[0]
 
     kwargs = {"epochs": opts.epochs, "print_iterations": opts.checkpoint_iterations,
               "batch_size": opts.batch_size, "save_path": os.path.join(opts.checkpoint_dir, '%s.ckpt' % style_name),

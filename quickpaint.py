@@ -98,9 +98,9 @@ def eval(data_in, paths_out, model_path, device='/gpu:0', batch_size=4,
 
         batch_shape = (batch_size,) + img_shape
 
-        modelext = os.path.splitext(model_path)[1]
+        model_ext = os.path.splitext(model_path)[1]
         
-        if modelext == ".ckpt":
+        if model_ext == ".ckpt":
            
             img_placeholder = tf.placeholder(tf.float32, shape=batch_shape, name='img_placeholder')
 
