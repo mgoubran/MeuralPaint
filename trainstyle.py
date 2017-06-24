@@ -1,15 +1,14 @@
 from __future__ import print_function
-import sys, os, pdb
+import os
 import numpy as np
 from scipy.misc import imread, imsave
 from optimize import optimize
 from argparse import ArgumentParser
-# from utils import save_img, get_img, exists, list_files
 import quickpaint
+import glob
 
 DEVICE = '/gpu:0'
 FRAC_GPU = 1
-
 
 def get_opts():
     parser = ArgumentParser()
@@ -91,13 +90,11 @@ def main():
     opts = get_opts()
 
     style_target = read_img(opts.style)
-
-    content_targets = []
-    for (dir_path, dir_names, file_names) in os.walk(opts.train_path):
-        content_targets.extend(file_names)
+    content_targets = glob.glob('%s/*' % opts.train_path)
+    style_name = os.path.split(os.path.basename(opts.style))[0]
 
     kwargs = {"epochs": opts.epochs, "print_iterations": opts.checkpoint_iterations,
-              "batch_size": opts.batch_size, "save_path": os.path.join(opts.checkpoint_dir, 'fns.ckpt'),
+              "batch_size": opts.batch_size, "save_path": os.path.join(opts.checkpoint_dir, '%s.ckpt' % style_name),
               "learning_rate": opts.learning_rate}
 
     args = [content_targets, style_target, opts.content_weight, opts.style_weight, opts.tv_weight,
@@ -108,9 +105,9 @@ def main():
 
         print('Epoch %d, Iteration: %d, Loss: %s' % (epoch, i, loss))
         to_print = (style_loss, content_loss, tv_loss)
+
         print('style: %s, content:%s, tv: %s' % to_print)
         if opts.output:
-            assert opts.output_dir != False
             preds_path = '%s/%s_%s.png' % (opts.output_dir, epoch, i)
 
             quickpaint.eval_mul_dims(opts.output, preds_path, opts.checkpoint_dir)
