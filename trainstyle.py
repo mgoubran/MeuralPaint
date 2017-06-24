@@ -58,7 +58,7 @@ def get_opts():
     assert os.path.exists(opts.style), 'style image not found.. %s does not exist!' % opts.style
     assert os.path.exists(opts.train_path), 'train path not found.. %s does not exist!' % opts.train_path
     assert os.path.exists(opts.net_path), 'Network not found.. %s does not exist!' % opts.net_path
-    assert os.path.exists(opts.output), 'Output test not found.. %s does not exist' %s opts.output
+    assert os.path.exists(opts.output), 'Output test not found.. %s does not exist' % opts.output
 
     if not os.path.exists(opts.output_dir):
         print('creating output tests dir')
@@ -96,7 +96,7 @@ def main():
     for (dir_path, dir_names, file_names) in os.walk(opts.train_path):
         content_targets.extend(file_names)
 
-    kwargs = {"slow": opts.slow, "epochs": opts.epochs, "print_iterations": opts.checkpoint_iterations,
+    kwargs = {"epochs": opts.epochs, "print_iterations": opts.checkpoint_iterations,
               "batch_size": opts.batch_size, "save_path": os.path.join(opts.checkpoint_dir, 'fns.ckpt'),
               "learning_rate": opts.learning_rate}
 
@@ -113,7 +113,6 @@ def main():
             assert opts.output_dir != False
             preds_path = '%s/%s_%s.png' % (opts.output_dir, epoch, i)
 
-            # ckpt_dir = os.path.dirname(opts.checkpoint_dir)
             quickpaint.eval_mul_dims(opts.output, preds_path, opts.checkpoint_dir)
 
     cmd_text = 'python quickpaint.py --checkpoint %s ...' % opts.checkpoint_dir
