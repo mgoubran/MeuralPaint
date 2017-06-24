@@ -10,6 +10,7 @@ import glob
 DEVICE = '/gpu:0'
 FRAC_GPU = 1
 
+
 def get_opts():
     parser = ArgumentParser()
     parser.add_argument('-c', '--checkpoint-dir', type=str, default='checkpoint',
@@ -85,6 +86,7 @@ def read_img(src):
     if not (len(img.shape) == 3 and img.shape[2] == 3):
         img = np.dstack((img, img, img))
     return img
+
 
 def main():
     opts = get_opts()
