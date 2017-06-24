@@ -16,15 +16,18 @@ def get_opts():
     parser.add_argument('-c', '--checkpoint-dir', type=str, default='checkpoint',
                         dest='checkpoint_dir', help='dir to save checkpoint in',
                         metavar='CHECKPOINT_DIR', required=True)
-    parser.add_argument('s', '--style', type=str,
+    parser.add_argument('-s', '--style', type=str,
                         dest='style', help='desired style image path',
                         metavar='STYLE', required=True)
     parser.add_argument('-t', '--train-path', type=str, default='data/train2014',
                         dest='train_path', help='path to training images folder',
                         metavar='TRAIN_PATH')
     parser.add_argument('-o', '--output', type=str,
-                        dest='output', help='output image path',
+                        dest='output', help='output test image at every checkpoint path',
                         metavar='OUTPUT', default=False)
+    parser.add_argument('-od', '--output-dir', type=str,
+                        dest='output_dir', help='output test images dir',
+                        metavar='OUTPUT DIR', default=False)
     parser.add_argument('-e', '--epochs', type=int, default=2,
                         dest='epochs', help='# of epochs', metavar='EPOCHS')
     parser.add_argument('-b', '--batch-size', type=int, default=4,
@@ -55,15 +58,11 @@ def get_opts():
     assert os.path.exists(opts.style), 'style image not found.. %s does not exist!' % opts.style
     assert os.path.exists(opts.train_path), 'train path not found.. %s does not exist!' % opts.train_path
     assert os.path.exists(opts.net_path), 'Network not found.. %s does not exist!' % opts.net_path
+    assert os.path.exists(opts.output), 'Output test not found.. %s does not exist' %s opts.output
 
-    if os.path.isdir(opts.output):
-        if not os.path.exists(opts.output):
-            print('creating output dir')
-            os.makedirs(opts.output)
-    else:
-        if not os.path.exists(os.path.dirname(opts.output)):
-            print('creating output dir')
-            os.makedirs(os.path.basename(opts.output))
+    if not os.path.exists(opts.output_dir):
+        print('creating output tests dir')
+        os.makedirs(opts.output_dir)
 
     if os.path.isdir(opts.checkpoint_dir):
         if not os.path.exists(opts.checkpoint_dir):
