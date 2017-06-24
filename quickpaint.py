@@ -93,7 +93,7 @@ def eval(data_in, paths_out, model_dir, device='/gpu:0', batch_size=4):
         batch_shape = (batch_size,) + img_shape
         img_placeholder = tf.placeholder(tf.float32, shape=batch_shape, name='img_placeholder')
 
-        # get predictions from vgg16 model
+        # get predictions
         preds = transform.net(img_placeholder)
         saver = tf.train.Saver()
 
