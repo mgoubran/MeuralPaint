@@ -10,6 +10,7 @@ import tensorflow as tf
 from argparse import ArgumentParser, RawTextHelpFormatter
 from collections import defaultdict
 from scipy.misc import imread, imsave
+from datetime import datetime
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # filter out info & warning logs
 
@@ -17,7 +18,11 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # filter out info & warning logs
 # read input arguments
 def get_opts():
     parser = ArgumentParser(description="Paint (transfer style to) image using a pre-trained neural network model.",
-                            formatter_class=RawTextHelpFormatter)
+                            formatter_class=RawTextHelpFormatter,
+                            usage="./quickpaint.py -i [ input (content) ] -o [ output (stylized content) ] -m [ model "
+                                  "(style) ] "
+                                  "./quickpaint.py -i inputs/stanford.jpg -o outputs/stanford_cubist.jpg -m "
+                                  "pre-trained_models/cubist.model")
     parser.add_argument('-m', '--model', type=str,
                         dest='model_path', help='path to load model (.ckpt or .model/.meta) from',
                         metavar='MODEL', required=True)
@@ -28,14 +33,15 @@ def get_opts():
                         dest='out_path', help='destination (dir or file) of transformed input (stylized content)',
                         metavar='OUT_PATH', required=True)
     parser.add_argument('-d', '--device', type=str,
-                        dest='device', help='device to perform compute on (default %(default)s)',
+                        dest='device', help='device to perform compute on (default: %(default)s)',
                         metavar='', default='/gpu:0')
-    parser.add_argument('-b','--batch-size', type=int,
-                        dest='batch_size', help='batch size for feed-forwarding (default %(default)s)',
+    parser.add_argument('-b', '--batch-size', type=int,
+                        dest='batch_size', help='batch size for feed-forwarding (default: %(default)s)',
                         metavar='', default=4)
-    parser.add_argument('-a','--model-arch', type=str,
-                    dest='model_arch', help='model architecture if models in form (.model) are used, (default %(default)s)',
-                    metavar='', default='pre-trained_models/model.meta')
+    parser.add_argument('-a', '--model-arch', type=str,
+                        dest='model_arch',
+                        help='model architecture if models in form (.model) are used, (default: %(default)s)',
+                        metavar='', default='pre-trained_models/model.meta')
 
     opts = parser.parse_args()
 
@@ -55,16 +61,18 @@ def get_opts():
 
     return opts
 
+
 # read image using scipy
 def read_img(src):
-   img = imread(src, mode='RGB')
-   if not (len(img.shape) == 3 and img.shape[2] == 3):
-       img = np.dstack((img,img,img))
+    img = imread(src, mode='RGB')
+    if not (len(img.shape) == 3 and img.shape[2] == 3):
+        img = np.dstack((img, img, img))
 
-   return img
+    return img
 
-def eval(data_in, paths_out, model_path, device='/gpu:0', batch_size=4, 
-    model_arch='pre-trained_models/model.meta'):
+
+def eval(data_in, paths_out, model_path, device='/gpu:0', batch_size=4,
+         model_arch='pre-trained_models/model.meta'):
     '''
     Transfers image style to another image using feed-forwarding and a pre-trained model
 
@@ -99,9 +107,9 @@ def eval(data_in, paths_out, model_path, device='/gpu:0', batch_size=4,
         batch_shape = (batch_size,) + img_shape
 
         model_ext = os.path.splitext(model_path)[1]
-        
+
         if model_ext == ".ckpt":
-           
+
             img_placeholder = tf.placeholder(tf.float32, shape=batch_shape, name='img_placeholder')
 
             # get predictions from model
@@ -112,13 +120,13 @@ def eval(data_in, paths_out, model_path, device='/gpu:0', batch_size=4,
 
         else:
 
-            #print("\n Reading model architecture from %s" % opts.model_arch)
+            # print("\n Reading model architecture from %s" % opts.model_arch)
 
             # load model meta graph
-            saver = tf.train.import_meta_graph(model_arch, clear_devices = True)
+            saver = tf.train.import_meta_graph(model_arch, clear_devices=True)
             # restore model
             saver.restore(sess, model_path)
-            
+
             img_placeholder = tf.get_collection("inputs")[0]
             preds = tf.get_collection("output")[0]
 
@@ -150,6 +158,7 @@ def eval(data_in, paths_out, model_path, device='/gpu:0', batch_size=4,
         eval(remaining_in, remaining_out, model_path,
              device=device, batch_size=1)
 
+
 def eval_mul_dims(in_path, out_path, model_path, device, batch_size, model_arch):
     '''
     Runs "eval" on diff image shapes after grouping them by shape
@@ -168,7 +177,6 @@ def eval_mul_dims(in_path, out_path, model_path, device, batch_size, model_arch)
         out_path_of_shape[shape].append(out_image)
 
     for shape in in_path_of_shape:
-
         # run function on every unique image shape
         eval(in_path_of_shape[shape], out_path_of_shape[shape],
              model_path, device, batch_size, model_arch)
@@ -177,11 +185,13 @@ def eval_mul_dims(in_path, out_path, model_path, device, batch_size, model_arch)
 def main():
     opts = get_opts()
 
+    start_time = datetime.now()
+
     # check if input is file or dir
     if not os.path.isdir(opts.in_path):
         full_in = [opts.in_path]
         full_out = [os.path.join(opts.out_path, os.path.basename(opts.in_path)) if os.path.isdir(opts.out_path) \
-                    else opts.out_path ]
+                        else opts.out_path]
     else:
         # get all filenames if dir
         files = []
@@ -191,7 +201,12 @@ def main():
         full_in = [os.path.join(opts.in_path, x) for x in files]
         full_out = [os.path.join(opts.out_path, x) if os.path.isdir(opts.out_path) else opts.out_path for x in files]
 
-    eval_mul_dims(full_in, full_out, opts.model_path, device=opts.device, batch_size=opts.batch_size, model_arch=opts.model_arch)
+    eval_mul_dims(full_in, full_out, opts.model_path, device=opts.device, batch_size=opts.batch_size,
+                  model_arch=opts.model_arch)
+
+    time_diff = (datetime.now() - start_time)
+
+    print("\n Painting done in %s.%s seconds ... Have a good day!\n" % (time_diff.seconds, time_diff.microseconds))
 
 
 if __name__ == '__main__':

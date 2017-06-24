@@ -1,7 +1,7 @@
 # MeuralPaint
 Paint images using famous artistic styles in seconds (or less!) 
 
-QuickPaint using pre-trained styles (models) or TrainStyle a new model on a specific style
+QuickPaint using pre-trained styles (models) or TrainStyle a new model on a new style
 
 A TensorFlow implementation for feed forward CNN fast neural style transfer, based on  [1-3].  
 
