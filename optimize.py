@@ -4,7 +4,7 @@ import vgg, time
 import tensorflow as tf, numpy as np
 import transform
 from operator import mul
-from utils import get_img
+from scipy.misc import imread
 
 STYLE_LAYERS = ('relu1_1', 'relu2_1', 'relu3_1', 'relu4_1', 'relu5_1')
 CONTENT_LAYER = 'relu4_2'
@@ -12,6 +12,14 @@ DEVICES = 'CUDA_VISIBLE_DEVICES'
 
 def _tensor_size(tensor):
     return functools.reduce(mul, (d.value for d in tensor.get_shape()[1:]), 1)
+
+# read image using scipy
+def read_img(src):
+    img = imread(src, mode='RGB')
+    if not (len(img.shape) == 3 and img.shape[2] == 3):
+        img = np.dstack((img, img, img))
+
+    return img
 
 def optimize(content_targets, style_target, content_weight, style_weight,
              tv_weight, vgg_path, epochs=2, print_iterations=1000,
@@ -52,14 +60,12 @@ def optimize(content_targets, style_target, content_weight, style_weight,
 
         preds = transform.net(X_content/255.0)
         preds_pre = vgg.preprocess(preds)
-
         net = vgg.net(vgg_path, preds_pre)
 
         content_size = _tensor_size(content_features[CONTENT_LAYER])*batch_size
         assert _tensor_size(content_features[CONTENT_LAYER]) == _tensor_size(net[CONTENT_LAYER])
-        content_loss = content_weight * (2 * tf.nn.l2_loss(
-            net[CONTENT_LAYER] - content_features[CONTENT_LAYER]) / content_size
-        )
+        content_loss = content_weight * (2 * tf.nn.l2_loss( net[CONTENT_LAYER] - content_features[CONTENT_LAYER]) /
+                                         content_size)
 
         style_losses = []
         for style_layer in STYLE_LAYERS:
@@ -98,7 +104,7 @@ def optimize(content_targets, style_target, content_weight, style_weight,
                 step = curr + batch_size
                 X_batch = np.zeros(batch_shape, dtype=np.float32)
                 for j, img_p in enumerate(content_targets[curr:step]):
-                   X_batch[j] = get_img(img_p, (256,256,3)).astype(np.float32)
+                   X_batch[j] = read_img(img_p, (256,256,3)).astype(np.float32)
 
                 iterations += 1
                 assert X_batch.shape[0] == batch_size

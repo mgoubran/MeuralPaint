@@ -24,15 +24,18 @@ works with different versions of pre-trained TF models
 - numpy 1.11.2
 
 #### To train:
+
+ 1) COCO dataset (training data)
  
- - 
+ 2) VGG19 imagenet weights 
+ 
 
 ## Acknowledgements 
 
 - Implementation based on fast-style-transfer: https://github.com/lengstrom/fast-style-transfer
 by lengstrom (engstrom at mit dot edu)
 
-- vgg network from: https://github.com/anishathalye/neural-style
+- TF vgg network from: https://github.com/anishathalye/neural-style
 
 - Pre-trained models acquired from: 
     1) https://drive.google.com/drive/folders/0B9jhaT37ydSyRk9UX0wwX3BpMzQ
