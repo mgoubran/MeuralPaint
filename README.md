@@ -1,7 +1,7 @@
 # MeuralPaint
 Paint images using famous artistic styles in seconds (or less!) 
 
-QuickPaint using pre-trained styles (models) or TrainStyle a new model on a new style
+`quickpaint` using pre-trained styles (models) or `trainstyle` a new model on a new style
 
 a TensorFlow implementation for feed forward CNN fast neural style transfer, based on  [1-3].  
 
@@ -13,22 +13,22 @@ works with different versions of pre-trained TF models
 
 ### QuickPaint
 
-Command line:
+**Command line**:
 
-python quickpaint.py -i [ input (content) ] -o [ output (stylized content) ] -m [ model (style) ] 
+python `quickpaint.py` -i [ input (content) ] -o [ output (stylized content) ] -m [ model (style) ] 
 
-Example: python quickpaint.py -i inputs/stanford.jpg -o outputs/stanford_cubist.jpg -m pre-trained_models/cubist.model
+Example: python `quickpaint.py `-i inputs/stanford.jpg -o outputs/stanford_cubist.jpg -m pre-trained_models/cubist.model
 
 required arguments:  
-  -i, --input  dir or file to transform (content)  
-  -o, --output destination (dir or file) of transformed input (stylized content)  
-  -m, --model  path to load model (.ckpt or .model/.meta) from
+ ` -i, --input ` dir or file to transform (content)  
+ ` -o, --output` destination (dir or file) of transformed input (stylized content)  
+`  -m, --model ` path to load model (.ckpt or .model/.meta) from
 
 optional arguments:  
-  -h, --help            show this help message and exit   
-  -d , --device         device to perform compute on (default: /gpu:0)   
-  -b , --batch-size     batch size for feed-forwarding (default: 4)   
-  -a , --model-arch     model architecture if models in form (.model) are used, (default: pre-trained_models/model.meta)
+  `-h, --help        `    show this help message and exit   
+ ` -d , --device     `    device to perform compute on (default: /gpu:0)   
+`  -b , --batch-size `    batch size for feed-forwarding (default: 4)   
+ ` -a , --model-arch `    model architecture if models in form (.model) are used, (default: pre-trained_models/model.meta)
 
 ### TrainStyle
 

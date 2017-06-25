@@ -190,8 +190,9 @@ def main():
     # check if input is file or dir
     if not os.path.isdir(opts.in_path):
         full_in = [opts.in_path]
-        full_out = [os.path.join(opts.out_path, os.path.basename(opts.in_path)) if os.path.isdir(opts.out_path) \
-                        else opts.out_path]
+        in_name = os.path.splitext(os.path.basename(opts.in_path))
+        out_name = str(in_name[0] + '_' + os.path.splitext(os.path.basename(opts.model_path))[0] + in_name[1])
+        full_out = [os.path.join(opts.out_path, out_name) if os.path.isdir(opts.out_path) else opts.out_path]
     else:
         # get all file names if dir
         files = []
