@@ -71,5 +71,3 @@ https://arxiv.org/abs/1607.08022
 
 [3] Gatys, Leon A., Alexander S. Ecker, and Matthias Bethge. "A neural algorithm of artistic style." arXiv preprint arXiv:1508.06576.
 https://arxiv.org/abs/1508.06576 
-
-(original, 'slow' neural transfer)

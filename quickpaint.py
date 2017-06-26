@@ -5,15 +5,13 @@
 
 import transform
 import numpy as np
-import os
-import tensorflow as tf
 from argparse import ArgumentParser, RawTextHelpFormatter
 from collections import defaultdict
 from scipy.misc import imread, imsave
 import time
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # filter out info & warning logs
-
+import os
+import tensorflow as tf
+#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # filter out info & warning logs
 
 # read input arguments
 def get_opts():
