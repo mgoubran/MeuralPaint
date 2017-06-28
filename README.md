@@ -9,9 +9,13 @@ works with different versions of pre-trained TF models
 
 ## Examples 
 
+<center>
+
 | | input |   |
 |:-----:|:-------:|:-----:|
 | | <img src="https://github.com/mgoubran/MeuralPaint/blob/master/inputs/florence.jpg" width="350">| | 
+
+<center/>
 
 
 | styles | examples | examples | styles  |
