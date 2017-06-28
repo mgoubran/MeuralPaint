@@ -9,8 +9,11 @@ works with different versions of pre-trained TF models
 
 ## Examples 
 
+| | input |   |
+|:-----:|:-------:|:-----:|
+![alt text]( inputs/florence.jpg)
 
-| styles | examples | styles | examples |
+| styles | examples | examples | styles  |
 |:-----:|:-------:|:-----:|:-------:|
 |  rain princess ![alt text]( styles/rain_princess.jpg) | ![alt text]( outputs/florence_rain_princess.jpg) | ![alt text]( outputs/florence_wreck.jpg) | the shipwreck of the minotaur ![alt text]( styles/the_shipwreck_of_the_minotaur.jpg) |
 |  wave ![alt text]( styles/wave.jpg) | ![alt text]( outputs/florence_wave.jpg) | ![alt text]( outputs/florence_mosaic.jpg) | mosaic ![alt text]( styles/mosaic.jpg) |
