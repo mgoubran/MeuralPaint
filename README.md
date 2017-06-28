@@ -9,6 +9,14 @@ works with different versions of pre-trained TF models
 
 ## Examples 
 
+| styles | examples | styles | examples |
+|:-----:|:-------:|:-----:|:-------:|
+|  la muse ![alt text]( styles/la_muse.jpg)    |         |       |   ![alt text]( styles/the_shipwreck_of_the_minotaur.jpg)        |
+|  rain princess ![alt text]( styles/rain_princess.jpg)      |         |       |  ![alt text]( styles/la_muse.jpg)         |
+|  ![alt text]( styles/the_scream.jpg)    |         |       |  ![alt text]( styles/udnie.jpg)         |
+|  ![alt text]( styles/wave.jpg)     |         |       |    ![alt text]( styles/the_shipwreck_of_the_minotaur.jpg)    |
+|  ![alt text]( styles/udnie.jpg)     |         |       |   ![alt text]( styles/udnie.jpg)  |
+
 ## Usage
 
 ### QuickPaint
