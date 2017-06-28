@@ -11,7 +11,7 @@ works with different versions of pre-trained TF models
 
 | | input |   |
 |:-----:|:-------:|:-----:|
-![alt text]( inputs/florence.jpg)
+| | ![alt text]( inputs/florence.jpg) |
 
 | styles | examples | examples | styles  |
 |:-----:|:-------:|:-----:|:-------:|
