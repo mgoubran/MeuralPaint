@@ -9,6 +9,17 @@ works with different versions of pre-trained TF models
 
 ## Examples 
 
+| styles | examples |
+|:-----:|:-------:|
+|  rain princess ![alt text]( styles/rain_princess.jpg) | ![alt text]( outputs/florence_rain_princess.jpg) |
+| the shipwreck of the minotaur ![alt text]( styles/the_shipwreck_of_the_minotaur.jpg) | ![alt text]( outputs/florence_wreck.jpg)  |
+|  wave ![alt text]( styles/wave.jpg) | ![alt text]( outputs/florence_wave.jpg) | ![alt text]( outputs/florence_mosaic.jpg) | mosaic ![alt text]( styles/mosaic.jpg) |
+|  the scream ![alt text]( styles/the_scream.jpg) | ![alt text]( outputs/florence_scream.jpg) | ![alt text]( outputs/florence_composition_vii.jpg) | composition vii ![alt text]( styles/composition_vii.jpg) |
+|  la muse ![alt text]( styles/la_muse.jpg) | ![alt text]( outputs/florence_la_muse.jpg) | ![alt text]( outputs/florence_cubist.jpg) | cubist ![alt text]( styles/cubist.jpg) |
+|  udnie ![alt text]( styles/udnie.jpg) | ![alt text]( outputs/florence_udnie.jpg) | ![alt text]( outputs/florence_feathers.jpg) | feathers ![alt text]( styles/feathers.jpg) |
+
+
+
 | styles | examples | styles | examples |
 |:-----:|:-------:|:-----:|:-------:|
 |  rain princess ![alt text]( styles/rain_princess.jpg) | ![alt text]( outputs/florence_rain_princess.jpg) | ![alt text]( outputs/florence_wreck.jpg) | the shipwreck of the minotaur ![alt text]( styles/the_shipwreck_of_the_minotaur.jpg) |
