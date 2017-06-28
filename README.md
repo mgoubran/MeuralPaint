@@ -9,9 +9,10 @@ works with different versions of pre-trained TF models
 
 ## Examples 
 
-| | input |   |
-|:-----:|:-------:|:-----:|
-| | ![alt text]( inputs/florence.jpg) |
+| | | input   | |   |
+|:-----:|:-------:|:-----:|-------:|:-----:|
+| |  |![alt text]( inputs/florence.jpg) |   |
+
 
 | styles | examples | examples | styles  |
 |:-----:|:-------:|:-----:|:-------:|
