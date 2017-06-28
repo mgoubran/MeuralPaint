@@ -11,10 +11,8 @@ works with different versions of pre-trained TF models
 
 | | input |   |
 |:-----:|:-------:|:-----:|
-| | ![alt text]( inputs/florence.jpg ) | | 
+| | <img src="https://github.com/mgoubran/MeuralPaint/blob/master/inputs/florence.jpg" width="150">| | 
 
-
-<img src="https://github.com/mgoubran/MeuralPaint/blob/master/inputs/florence.jpg" width="100">
 
 | styles | examples | examples | styles  |
 |:-----:|:-------:|:-----:|:-------:|
