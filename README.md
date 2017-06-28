@@ -11,7 +11,7 @@ works with different versions of pre-trained TF models
 
 | | input |   |
 |:-----:|:-------:|:-----:|
-| | <img src="https://github.com/mgoubran/MeuralPaint/blob/master/inputs/florence.jpg" width="150">| | 
+| | <img src="https://github.com/mgoubran/MeuralPaint/blob/master/inputs/florence.jpg" width="350">| | 
 
 
 | styles | examples | examples | styles  |
