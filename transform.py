@@ -1,4 +1,4 @@
-import tensorflow as tf, pdb
+import tensorflow as tf
 
 WEIGHTS_INIT_STDEV = .1
 
@@ -32,7 +32,6 @@ def _conv_tranpose_layer(net, num_filters, filter_size, strides):
 
     batch_size, rows, cols, in_channels = [i.value for i in net.get_shape()]
     new_rows, new_cols = int(rows * strides), int(cols * strides)
-    # new_shape = #tf.pack([tf.shape(net)[0], new_rows, new_cols, num_filters])
 
     new_shape = [batch_size, new_rows, new_cols, num_filters]
     tf_shape = tf.stack(new_shape)

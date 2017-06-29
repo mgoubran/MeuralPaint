@@ -5,7 +5,7 @@
 from __future__ import print_function
 import os
 import numpy as np
-from scipy.misc import imread, imsave
+from scipy.misc import imread
 from optimize import optimize
 from argparse import ArgumentParser
 import quickpaint

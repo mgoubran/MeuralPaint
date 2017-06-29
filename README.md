@@ -69,7 +69,7 @@ optional arguments:
 - Implementation based on fast-style-transfer: https://github.com/lengstrom/fast-style-transfer
 by lengstrom (engstrom at mit dot edu)
 
-- TF vgg network from: https://github.com/anishathalye/neural-style
+- TF vgg network from: https://github.com/anishathalye/neural-style by anishathalye (http://www.anishathalye.com)
 
 - Pre-trained models acquired from: 
     1) https://drive.google.com/drive/folders/0B9jhaT37ydSyRk9UX0wwX3BpMzQ
