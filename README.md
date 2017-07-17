@@ -45,7 +45,7 @@ optional arguments:
 `-d , --device`        device to perform compute on (default: /gpu:0)   
 `-b , --batch-size`     batch size for feed-forwarding (default: 4)   
 `-a , --model-arch`    model architecture if models in form (.model) are used, (default: pre-trained_models/model.meta)
-`-ma, --mask`       create binary mask from input (@ 1% of max) and mask output  (default: 0 -> no masking)
+`-ma, --mask`       create binary mask from input (@ 1% of max) and mask output  (default: 0 -> no masking)     
 `-bl, --blend`      multiply the original image with the output using a weighting (factor) -- to preserve original colors / contrast (default: 0 -> no blending)
 
 ### TrainStyle
