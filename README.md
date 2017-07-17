@@ -31,7 +31,7 @@ works with different versions of pre-trained TF models, many pre-trained models 
 
 **Command line**:
 
-python `quickpaint.py` -i [ input (content) ] -o [ output (stylized content) ] -m [ model (style) ] -ma [ mask  ] -bl [ blend]
+python `quickpaint.py` -i [ input (content) ] -o [ output (stylized content) ] -m [ model (style) ] -ma [ mask  ] -bl [ blend ]
 
 Example: python `quickpaint.py` -i inputs/stanford.jpg -o outputs/stanford_cubist.jpg -m pre-trained_models/cubist.model -ma 1 -bl 0.05
 
