@@ -13,7 +13,7 @@ works with different versions of pre-trained TF models, many pre-trained models 
 
 | | input |   |
 |:-----:|:-------:|:-----:|
-| | <img src="https://github.com/mgoubran/MeuralPaint/inputs/florence.jpg" width="350">| | 
+| | <img src="https://github.com/mgoubran/MeuralPaint/blob/master/inputs/florence.jpg" width="350">| | 
 
 </center>
 
