@@ -61,24 +61,23 @@ python `trainstyle.py` -s [ style ] -c [ checkpoint dir ]  -o [ output test imag
 Example: python `trainstyle.py` -s styles/the_scream.jpg -c checkpoint -o stanford.jpg 
 -od test -cw 1.5e1 -i 1000 -b 20
 
-required arguments:
-` -c, --checkpoint-dir ` dir to save checkpoint in
+required arguments:     
+` -c, --checkpoint-dir ` dir to save checkpoint in      
 `-s --style`               desired style image path  
 
-optional arguments:
-`-h, --help`            show this help message and exit
-`-t , --train-path`     path to training images folder
-`-o , --output `        output test image at every checkpoint path
-`-od, --output-dir`     output test images dir
-`-e , --epochs `        # of epochs
-`-b, --batch-size`      batch size
-`-i , --checkpoint-iterations` checkpoint frequency
-`-n , --net-path`       path to VGG19 network (default data/imagenet-vgg-
-                        verydeep-19.mat)
-`-cw, --content-weight` content weight (default 7.5)
-`-sw, --style-weight`   style weight (default 100.0)
-`-tw, --tv-weight`      total variation regularization weight (default 200.0)
-`-l , --learning-rate`  learning rate (default 0.001)
+optional arguments:     
+`-h, --help`            show this help message and exit     
+`-t , --train-path`     path to training images folder      
+`-o , --output `        output test image at every checkpoint path      
+`-od, --output-dir`     output test images dir      
+`-e , --epochs `        # of epochs     
+`-b, --batch-size`      batch size      
+`-i , --checkpoint-iterations` checkpoint frequency     
+`-n , --net-path`       path to VGG19 network (default data/imagenet-vgg-verydeep-19.mat)
+`-cw, --content-weight` content weight (default 7.5)        
+`-sw, --style-weight`   style weight (default 100.0)        
+`-tw, --tv-weight`      total variation regularization weight (default 200.0)       
+`-l , --learning-rate`  learning rate (default 0.001)       
 
 ## Dependencies
 
