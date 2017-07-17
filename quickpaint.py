@@ -10,16 +10,16 @@ from scipy.misc import imread, imsave
 import time
 import os
 import tensorflow as tf
-#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # filter out info & warning logs
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # filter out info & warning logs
 
 # read input arguments
 def get_opts():
     parser = ArgumentParser(description="Paint (transfer style to) image using a pre-trained neural network model.",
                             formatter_class=RawTextHelpFormatter,
                             usage="./quickpaint.py -i [ input (content) ] -o [ output (stylized content) ] -m [ model "
-                                  "(style) ] \n "
+                                  "(style) ] -ma [ mask ] -bl [ blend ]"
                                   "Example: ./quickpaint.py -i inputs/stanford.jpg -o outputs/stanford_cubist.jpg -m "
-                                  "pre-trained_models/cubist.model")
+                                  "pre-trained_models/cubist.model -ma 1 -bl 0.5 ")
     parser.add_argument('-m', '--model', type=str,
                         dest='model_path', help='path to load model (.ckpt or .model/.meta)',
                         metavar='MODEL', required=True)
@@ -39,6 +39,12 @@ def get_opts():
                         dest='model_arch',
                         help='model architecture if models in form (.model) are used, (default: %(default)s)',
                         metavar='', default='pre-trained_models/model.meta')
+    parser.add_argument('-ma', '--mask', type=int,
+                        dest='mask', help='create binary mask from input (@ 1% of max) and mask output, (default: %(default)s)',
+                        metavar='', default=0)
+    parser.add_argument('-bl', '--blend', type=float,
+                        dest='blend', help='multiply the original image with the output using a weighting (factor), (default: %(default)s)',
+                        metavar='', default=0)
 
     opts = parser.parse_args()
 
@@ -52,9 +58,11 @@ def get_opts():
 
     assert os.path.exists(opts.model_path), 'Model not found.. %s does not exist!' % opts.model_path
 
-    assert isinstance(opts.batch_size, int)
-    assert opts.batch_size > 0
+    assert isinstance(opts.batch_size, int), '-b, --batch_size needs to be a positive integer'
+    assert opts.batch_size > 0, '-b, --batch_size needs to be a positive integer'
     assert isinstance(opts.device, str)
+    assert (opts.mask==1 or opts.mask==0), '-ma, --mask needs to be binary'
+    assert opts.blend <= 1, '-bl, --blend needs to be a float equal or less to 1'
 
     return opts
 
@@ -69,7 +77,7 @@ def read_img(src):
 
 
 def eval(data_in, paths_out, model_path, device='/gpu:0', batch_size=4,
-         model_arch='pre-trained_models/model.meta'):
+         model_arch='pre-trained_models/model.meta', mask=0, blend=0):
     '''
     Transfers image style to another image using feed-forwarding and a pre-trained model
 
@@ -144,7 +152,21 @@ def eval(data_in, paths_out, model_path, device='/gpu:0', batch_size=4,
 
             # save output images
             for j, path_out in enumerate(curr_batch_out):
-                img = np.clip(_preds[j], 0, 255).astype(np.uint8)
+                img = np.clip(_preds[j], 0, 255).astype(np.uint8) # after clipping to 255
+
+                if mask == 1:
+                    thr = X[i].max() * 0.01
+                    inmask = np.where(X[j]>thr, 1, 0)
+                    if inmask.shape != img.shape:
+                        img = img[0:inmask.shape[0],0:inmask.shape[1],:]
+                    img = np.multiply(inmask,img)                        
+                
+                if blend > 0:
+                    inimg = X[i] * blend
+                    if inimg.shape != img.shape:
+                        img = img[0:inimg.shape[0],0:inimg.shape[1],:]
+                    img = np.multiply(inimg,img)
+
                 imsave(path_out, img)
 
         remaining_in = data_in[num_iters * batch_size:]
@@ -156,7 +178,7 @@ def eval(data_in, paths_out, model_path, device='/gpu:0', batch_size=4,
              device=device, batch_size=1)
 
 
-def eval_mul_dims(in_path, out_path, model_path, device, batch_size, model_arch):
+def eval_mul_dims(in_path, out_path, model_path, device, batch_size, model_arch, mask, blend):
     '''
     Runs "eval" on diff image shapes after grouping them by shape
     '''
@@ -176,7 +198,7 @@ def eval_mul_dims(in_path, out_path, model_path, device, batch_size, model_arch)
     for shape in in_path_of_shape:
         # run function on every unique image shape
         eval(in_path_of_shape[shape], out_path_of_shape[shape],
-             model_path, device, batch_size, model_arch)
+             model_path, device, batch_size, model_arch, mask, blend)
 
 
 def main():
@@ -200,7 +222,7 @@ def main():
         full_out = [os.path.join(opts.out_path, x) if os.path.isdir(opts.out_path) else opts.out_path for x in files]
 
     eval_mul_dims(full_in, full_out, opts.model_path, device=opts.device, batch_size=opts.batch_size,
-                  model_arch=opts.model_arch)
+                  model_arch=opts.model_arch, mask=opts.mask, blend=opts.blend)
 
     print("\n Painting done in %0.3f seconds ... Have a good day!\n" % (time.time() - start_time))
 

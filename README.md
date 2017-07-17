@@ -31,20 +31,22 @@ works with different versions of pre-trained TF models, many pre-trained models 
 
 **Command line**:
 
-python `quickpaint.py` -i [ input (content) ] -o [ output (stylized content) ] -m [ model (style) ] 
+python `quickpaint.py` -i [ input (content) ] -o [ output (stylized content) ] -m [ model (style) ] -ma [ mask  ] -bl [ blend]
 
-Example: python `quickpaint.py` -i inputs/stanford.jpg -o outputs/stanford_cubist.jpg -m pre-trained_models/cubist.model
+Example: python `quickpaint.py` -i inputs/stanford.jpg -o outputs/stanford_cubist.jpg -m pre-trained_models/cubist.model -ma 1 -bl 0.05
 
 required arguments:  
- `-i, --input`  dir or file to transform (content)  
- `-o, --output`  destination (dir or file) of transformed input (stylized content)  
-`-m, --model`   path to load model (.ckpt or .model/.meta) from
+`-i, --input`       dir or file to transform (content)  
+`-o, --output`      destination (dir or file) of transformed input (stylized content)  
+`-m, --model`       path to load model (.ckpt or .model/.meta) from
 
 optional arguments:  
-  `-h, --help`          show this help message and exit   
- `-d , --device`        device to perform compute on (default: /gpu:0)   
+`-h, --help`          show this help message and exit   
+`-d , --device`        device to perform compute on (default: /gpu:0)   
 `-b , --batch-size`     batch size for feed-forwarding (default: 4)   
- `-a , --model-arch`    model architecture if models in form (.model) are used, (default: pre-trained_models/model.meta)
+`-a , --model-arch`    model architecture if models in form (.model) are used, (default: pre-trained_models/model.meta)
+`-ma, --mask`       create binary mask from input (@ 1% of max) and mask output  (default: 0 -> no masking)
+`-bl, --blend`      multiply the original image with the output using a weighting (factor) -- to preserve original colors / contrast (default: 0 -> no blending)
 
 ### TrainStyle
 
@@ -57,7 +59,7 @@ Example: python `trainstyle.py` -s styles/the_scream.jpg -c checkpoint -o stanfo
 -od test -cw 1.5e1 -i 1000 -b 20
 
 required arguments:     
-`-c, --checkpoint-dir` dir to save checkpoint in      
+`-c, --checkpoint-dir`     dir to save checkpoint in      
 `-s --style`               desired style image path  
 
 optional arguments:     
