@@ -7,7 +7,7 @@ import os
 import numpy as np
 from scipy.misc import imread
 from optimize import optimize
-from argparse import ArgumentParser
+from argparse import ArgumentParser, RawTextHelpFormatter
 import quickpaint
 import glob
 
@@ -16,7 +16,14 @@ FRAC_GPU = 1
 
 
 def get_opts():
-    parser = ArgumentParser()
+    parser = ArgumentParser(description="Train neural network on the COCO data set using a specific style.",
+                            formatter_class=RawTextHelpFormatter,
+                            usage="./trainstyle.py -s [ style ] -c [ checkpoint dir ]  -o [ output test image ]"
+                                  "-i [ checkpoint iterations ] -od [ output test dir ] -cw [ content weight ] "
+                                  "-tv [ tv weight ] -sw [ style weight ] - b [ batch size ] -l [ learning rate ] "
+                                  "-n [ network path ]"
+                                  "Example: ./trainstyle.py -s styles/the_scream.jpg -c checkpoint -o stanford.jpg"
+                                  "-od test -cw 1.5e1 -i 1000 -b 20")
     parser.add_argument('-c', '--checkpoint-dir', type=str, default='checkpoint',
                         dest='checkpoint_dir', help='dir to save checkpoint in',
                         metavar='CHECKPOINT_DIR', required=True)

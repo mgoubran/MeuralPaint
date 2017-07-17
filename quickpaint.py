@@ -17,11 +17,11 @@ def get_opts():
     parser = ArgumentParser(description="Paint (transfer style to) image using a pre-trained neural network model.",
                             formatter_class=RawTextHelpFormatter,
                             usage="./quickpaint.py -i [ input (content) ] -o [ output (stylized content) ] -m [ model "
-                                  "(style) ] "
-                                  "./quickpaint.py -i inputs/stanford.jpg -o outputs/stanford_cubist.jpg -m "
+                                  "(style) ] \n "
+                                  "Example: ./quickpaint.py -i inputs/stanford.jpg -o outputs/stanford_cubist.jpg -m "
                                   "pre-trained_models/cubist.model")
     parser.add_argument('-m', '--model', type=str,
-                        dest='model_path', help='path to load model (.ckpt or .model/.meta) from',
+                        dest='model_path', help='path to load model (.ckpt or .model/.meta)',
                         metavar='MODEL', required=True)
     parser.add_argument('-i', '--input', type=str,
                         dest='in_path', help='dir or file to transform (content)',

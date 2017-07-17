@@ -5,7 +5,7 @@ Paint images using famous artistic styles in seconds (or less!)
 
 a TensorFlow implementation for feed forward CNN fast neural style transfer, based on  [1-3].  
 
-works with different versions of pre-trained TF models
+works with different versions of pre-trained TF models, many pre-trained models included (more to come)
 
 ## Examples 
 
@@ -30,6 +30,10 @@ works with different versions of pre-trained TF models
 
 ### QuickPaint
 
+**GUI**:
+
+![alt text](gui.png) 
+
 **Command line**:
 
 python `quickpaint.py` -i [ input (content) ] -o [ output (stylized content) ] -m [ model (style) ] 
@@ -48,6 +52,33 @@ optional arguments:
  ` -a , --model-arch `    model architecture if models in form (.model) are used, (default: pre-trained_models/model.meta)
 
 ### TrainStyle
+
+**Command line**:
+
+python `trainstyle.py` -s [ style ] -c [ checkpoint dir ]  -o [ output test image ] -i [ checkpoint iterations ] -t [ training set path ]
+-od [ output test dir ]  -cw [ content weight ] -tv [ tv weight ] -sw [ style weight ] - b [ batch size ] -l [ learning rate ] -n [ network path ]
+
+Example: python `trainstyle.py` -s styles/the_scream.jpg -c checkpoint -o stanford.jpg 
+-od test -cw 1.5e1 -i 1000 -b 20
+
+required arguments:
+` -c, --checkpoint-dir ` dir to save checkpoint in
+`-s --style`               desired style image path  
+
+optional arguments:
+`-h, --help`            show this help message and exit
+`-t , --train-path`     path to training images folder
+`-o , --output `        output test image at every checkpoint path
+`-od, --output-dir`     output test images dir
+`-e , --epochs `        # of epochs
+`-b, --batch-size`      batch size
+`-i , --checkpoint-iterations` checkpoint frequency
+`-n , --net-path`       path to VGG19 network (default data/imagenet-vgg-
+                        verydeep-19.mat)
+`-cw, --content-weight` content weight (default 7.5)
+`-sw, --style-weight`   style weight (default 100.0)
+`-tw, --tv-weight`      total variation regularization weight (default 200.0)
+`-l , --learning-rate`  learning rate (default 0.001)
 
 ## Dependencies
 
