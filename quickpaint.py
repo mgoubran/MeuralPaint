@@ -10,7 +10,8 @@ from scipy.misc import imread, imsave
 import time
 import os
 import tensorflow as tf
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # filter out info & warning logs
+
+os.environ['TF_CPP_MIN_LOG_LEVEL']="3"  # filter out info & warning logs
 
 # read input arguments
 def get_opts():

@@ -10,6 +10,9 @@ import math
 from PyQt4 import QtGui, QtCore
 import quickpaint as qp
 
+os.environ['TF_CPP_MIN_LOG_LEVEL']="3"  # filter out info & warning logs
+
+
 class meural_gui(QtGui.QWidget):
    def __init__(self, parent = None):
       super(meural_gui, self).__init__(parent)
