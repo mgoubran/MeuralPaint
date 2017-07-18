@@ -94,7 +94,7 @@ class meural_gui(QtGui.QWidget):
       out_name = str(in_name[0] + '_' + modelname + in_name[1])
 
       qp.eval_mul_dims(in_path=[filename],out_path=[out_name], model_path=model, device='/gpu:0', 
-         batch_size=4, model_arch='pre-trained_models/model.meta')
+         batch_size=4, model_arch='pre-trained_models/model.meta', mask=0, blend=0)
 
       outpixmap = QtGui.QPixmap(out_name)
       scaledoutpixmap = outpixmap.scaled(500,500, QtCore.Qt.KeepAspectRatio)
