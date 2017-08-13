@@ -41,7 +41,7 @@ def get_opts():
                         help='model architecture if models in form (.model) are used, (default: %(default)s)',
                         metavar='', default='pre-trained_models/model.meta')
     parser.add_argument('-ma', '--mask', type=int,
-                        dest='mask', help='create binary mask from input (@ 1% of max) and mask output, (default: %(default)s)',
+                        dest='mask', help='create binary mask from input (@ 1 percent of max) and mask output, (default: %(default)s)',
                         metavar='', default=0)
     parser.add_argument('-bl', '--blend', type=float,
                         dest='blend', help='multiply the original image with the output using a weighting (factor), (default: %(default)s)',
