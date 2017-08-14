@@ -22,9 +22,9 @@ def get_opts():
                             usage="./quickpaint.py -i [ input (content) ] -o [ output (stylized content) ] -m [ model "
                                   "(style) ] -ma [ mask ] -bl [ blend ]"
                                   "Example: ./quickpaint.py -i inputs/stanford.jpg -o outputs/stanford_cubist.jpg -m "
-                                  "pre-trained_models/cubist.model -ma 1 -bl 0.5 ")
+                                  "cubist -ma 1 -bl 0.5 ")
     parser.add_argument('-m', '--model', type=str,
-                        dest='model_path', help='path to load model (.ckpt or .model/.meta)',
+                        dest='model_path', help='model name to load',
                         metavar='MODEL', required=True)
     parser.add_argument('-i', '--input', type=str,
                         dest='in_path', help='dir or file to transform (content)',
@@ -37,7 +37,7 @@ def get_opts():
                         metavar='', default='/gpu:0')
     parser.add_argument('-b', '--batch-size', type=int,
                         dest='batch_size', help='batch size for feed-forwarding (default: %(default)s)',
-                        metavar='', default=2)
+                        metavar='', default=1)
     parser.add_argument('-ma', '--mask', type=int,
                         dest='mask',
                         help='create binary mask from input (@ 1 percent of max) and mask output, (default: %(default)s)',
@@ -78,7 +78,7 @@ def read_img(src):
     return img
 
 
-def eval(data_in, paths_out, model_path, device, batch_size,
+def transfer(sess, data_in, paths_out, model_path, device, batch_size,
          mask, blend):
     '''
     Transfers image style to another image using feed-forwarding and a pre-trained model
@@ -96,73 +96,88 @@ def eval(data_in, paths_out, model_path, device, batch_size,
 
     # read in img
     img = read_img(data_in[0])
-
     # get img_shape
     img_shape = img.shape
 
-    # start TF graph
-    g = tf.Graph()
+    batch_shape = (batch_size,) + img_shape
+    img_placeholder = tf.placeholder(tf.float32, shape=batch_shape, name='img_placeholder')
+
+    # get predictions from model
+    preds = transform.net(img_placeholder)    
+    saver = tf.train.Saver()
+
+    # restore model
+    saver.restore(sess, model_path)
+
+    num_iters = int(len(paths_out) / batch_size)
+
+    # iterate over batches (maybe run in parallel w joblib if needed)
+    for i in range(num_iters):
+
+        pos = i * batch_size
+        curr_batch_out = paths_out[pos:pos + batch_size]
+        curr_batch_in = data_in[pos:pos + batch_size]
+        X = np.zeros(batch_shape, dtype=np.float32)
+
+        # iterate over images in batch
+        for j, path_in in enumerate(curr_batch_in):
+            X[j] = read_img(path_in)
+            _preds = sess.run(preds, feed_dict={img_placeholder: X})
+
+        # save output images
+        for j, path_out in enumerate(curr_batch_out):
+            img = np.clip(_preds[j], 0, 255).astype(np.uint8)  # after clipping to 255
+
+            if mask == 1:
+                thr = X[i].max() * 0.01
+                inmask = np.where(X[j] > thr, 1, 0)
+                if inmask.shape != img.shape:
+                    img = img[0:inmask.shape[0], 0:inmask.shape[1], :]
+                img = np.multiply(inmask, img)
+
+            if blend > 0:
+                inimg = X[i] * blend
+                if inimg.shape != img.shape:
+                    img = img[0:inimg.shape[0], 0:inimg.shape[1], :]
+                img = np.multiply(inimg, img)
+
+            imsave(path_out, img)
+
+    remaining_in = data_in[num_iters * batch_size:]
+    remaining_out = paths_out[num_iters * batch_size:]
+
+    # re-run on remaining images in list not in previous batch
+    if len(remaining_in) > 0:
+        eval(remaining_in, remaining_out, model_path,
+             device=device, batch_size=1)
+
+
+def eval(data_in, paths_out, model_path, device, batch_size,
+         mask, blend):
 
     # define batch_size
     batch_size = min(len(paths_out), batch_size)
     soft_config = tf.ConfigProto(allow_soft_placement=True)
     soft_config.gpu_options.allow_growth = True
 
-    # TF session
-    with g.as_default(), g.device(device), tf.Session(config=soft_config) as sess:
+    try:        
+        # start TF graph
+        g = tf.Graph()
+        # TF session
+        with g.as_default(), g.device(device), tf.Session(config=soft_config) as sess:
 
-        batch_shape = (batch_size,) + img_shape
+            transfer(sess, data_in, paths_out, model_path, device, batch_size,
+             mask, blend)
 
-        img_placeholder = tf.placeholder(tf.float32, shape=batch_shape, name='img_placeholder')
+    except tf.errors.ResourceExhaustedError:
+        print('Not enough memory on GPU will run on CPU instead!')
+        # start cpu TF graph
+        gc = tf.Graph()
+        # TF session
+        with gc.as_default(), gc.device("/cpu:0"), tf.Session(config=soft_config) as sessc:
 
-        # get predictions from model
-        preds = transform.net(img_placeholder)
-        saver = tf.train.Saver()
-
-        # restore model
-        saver.restore(sess, model_path)
-
-        num_iters = int(len(paths_out) / batch_size)
-
-        # iterate over batches (maybe run in parallel w joblib if needed)
-        for i in range(num_iters):
-
-            pos = i * batch_size
-            curr_batch_out = paths_out[pos:pos + batch_size]
-            curr_batch_in = data_in[pos:pos + batch_size]
-            X = np.zeros(batch_shape, dtype=np.float32)
-
-            # iterate over images in batch
-            for j, path_in in enumerate(curr_batch_in):
-                X[j] = read_img(path_in)
-                _preds = sess.run(preds, feed_dict={img_placeholder: X})
-
-            # save output images
-            for j, path_out in enumerate(curr_batch_out):
-                img = np.clip(_preds[j], 0, 255).astype(np.uint8)  # after clipping to 255
-
-                if mask == 1:
-                    thr = X[i].max() * 0.01
-                    inmask = np.where(X[j] > thr, 1, 0)
-                    if inmask.shape != img.shape:
-                        img = img[0:inmask.shape[0], 0:inmask.shape[1], :]
-                    img = np.multiply(inmask, img)
-
-                if blend > 0:
-                    inimg = X[i] * blend
-                    if inimg.shape != img.shape:
-                        img = img[0:inimg.shape[0], 0:inimg.shape[1], :]
-                    img = np.multiply(inimg, img)
-
-                imsave(path_out, img)
-
-        remaining_in = data_in[num_iters * batch_size:]
-        remaining_out = paths_out[num_iters * batch_size:]
-
-    # re-run on remaining images in list not in previous batch
-    if len(remaining_in) > 0:
-        eval(remaining_in, remaining_out, model_path,
-             device=device, batch_size=1)
+            transfer(sessc, data_in, paths_out, model_path, device, batch_size,
+             mask, blend)
 
 
 def eval_mul_dims(in_path, out_path, model_path, device, batch_size, mask, blend):
@@ -196,7 +211,7 @@ def main():
     if opts.model_path == "all":
         models = glob.glob('pre-trained_models/*.ckpt')
     else:
-        models = [opts.model_path]
+        models = [str(os.path.join('pre-trained_models',opts.model_path) + '.ckpt')]
 
     for m, model in enumerate(models):
 
