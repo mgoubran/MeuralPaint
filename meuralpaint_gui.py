@@ -89,7 +89,8 @@ class meural_gui(QtGui.QWidget):
       print('input file: %s' % filename)
 
       modelname = os.path.basename(modelpath).split('.')[0]
-      model = glob.glob('pre-trained_models/%s*' % modelname)[0]
+      #model = glob.glob('pre-trained_models/%s*' % modelname)[0]
+      model = 'pre-trained_models/%s.ckpt' % modelname
 
       print('chosen model: %s' % modelname)
 
@@ -97,7 +98,7 @@ class meural_gui(QtGui.QWidget):
       out_name = str(in_name[0] + '_' + modelname + in_name[1])
 
       qp.eval_mul_dims(in_path=[filename],out_path=[out_name], model_path=model, device='/gpu:0', 
-         batch_size=4, model_arch='pre-trained_models/model.meta', mask=0, blend=0)
+         batch_size=4, mask=0, blend=0)
 
       outpixmap = QtGui.QPixmap(out_name)
       scaledoutpixmap = outpixmap.scaled(500,500, QtCore.Qt.KeepAspectRatio)
