@@ -211,7 +211,8 @@ def main():
     start_time = time.time()
 
     if opts.model_path == "all":
-        models = glob.glob('pre-trained_models/*.ckpt')
+        modelnames = glob.glob('styles/*.jpg')
+        models = [str(os.path.join('pre-trained_models', os.path.split(i)[1].split('.')[0] ) + '.ckpt') for i in modelnames ]
     else:
         models = [str(os.path.join('pre-trained_models', opts.model_path) + '.ckpt')]
 
